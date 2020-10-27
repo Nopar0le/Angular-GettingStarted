@@ -11,8 +11,12 @@ import { ProductService } from './product.service'
 export class ProductListComponent implements OnInit {
 //#region Interface Implements methods
   ngOnInit(): void {
-    this.products = this._productService.getProducts();
-    this.filteredProducts = this.products;
+    this._productService.getProducts().subscribe({
+      next: products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      }, error: err => this._errorMessage = err
+    });
   }
 //#endregion Interface Implements methods
 
@@ -35,6 +39,7 @@ export class ProductListComponent implements OnInit {
 
 //#region Private Properties
   private _listFilter: string;
+  private _errorMessage: string;
 //#endregion Private Properties
 
 //#region CTor
